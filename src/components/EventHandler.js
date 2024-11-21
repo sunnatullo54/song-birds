@@ -4,14 +4,15 @@ export class EventHandler {
   }
 
   init() {
-    const startQuiz = document.querySelector(".start-button");
-    const QuizPage = document.querySelector(".quiz-page");
-    const startPage = document.querySelector(".start-page");
+    const startQuiz = document.querySelector('.start-button');
+    const playButton = document.querySelector('.play-button')
 
     startQuiz.addEventListener("click", () => {
-      startPage.classList.remove("active");
-      QuizPage.classList.add("active");
       this.quizManager.startQuiz();
-    });
+    })
+
+    playButton.addEventListener("click", (e) => {
+      this.quizManager.audioPlayer.toggleAudio(e.target);
+    })
   }
 }
