@@ -8,20 +8,61 @@ export class QuizManager {
         this.uiUpdater = new UIUpdater();
         this.currentCategory = 0;
         this.currentBird = null;
+        this.givenCorrectAnswer = false;
+        this.score = 0;
+        this.attemps = 0;
     }
 
     startQuiz() {
         this.initQuestion();
         this.uiUpdater.startQuizUi();
     }
-
+    
     initQuestion() {
+        this.attemps = 0;
+        this.givenCorrectAnswer = false;
+
+        const audioButton = document.querySelector('.play-button');
         const categoryBird = birdsData[this.currentCategory];
         const randomNumber = Math.floor(Math.random() * categoryBird.length);
         this.currentBird = categoryBird[randomNumber];
 
-        this.uiUpdater.updateBirdList(categoryBird);
+        audioButton.dataset.audio = this.currentBird.audio; 
+    
+        this.uiUpdater.updateBirdList(categoryBird); 
+    }
+    
+    handleBirdSelectior(element) {
+        if (this.givenCorrectAnswer) return; 
+        console.log(element);
+        
+        const choosen = birdsData[this.currentCategory].filter((bird) => bird.name === element.dataset.bird);
 
-        console.log(this.currentBird);
+        this.uiUpdater.showBirdDetail(choosen[0]);
+    
+        if (element.dataset.bird === this.currentBird.name) {
+            this.score = this.score + 5 - this.attemps;
+            this.uiUpdater.updateScore(this.score);
+            this.givenCorrectAnswer = true; 
+            element.classList.add('correct');
+            this.correctSoundFn();
+            this.uiUpdater.showMysteryBird(this.currentBird);
+            this.uiUpdater.enableNextQuestion();
+            this.currentCategory++;
+        } else {
+            this.attemps++;
+            element.classList.add('incorrect');
+            this.incorrectSoundFn();
+        }
+    }
+
+    correctSoundFn() {
+        const correctSound = new Audio('../../assets/sounds/rightanswer-95219.mp3');
+        correctSound.play();
+    }
+
+    incorrectSoundFn() {
+        const incorrectSound = new Audio('../../assets/sounds/wrong-answer-21-199825.mp3');
+        incorrectSound.play();
     }
 }
