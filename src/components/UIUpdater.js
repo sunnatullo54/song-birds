@@ -1,5 +1,3 @@
-import { birdsData } from "../../assets/db/data.js";
-
 export class UIUpdater {
     startQuizUi() {
         const quizPage = document.querySelector('.quiz-page');
@@ -31,14 +29,14 @@ export class UIUpdater {
     }
 
     showBirdDetail(bird) {
-        const BirdDetail = document.querySelector('.bird-details');
+        const birdDetail = document.querySelector('.bird-details');
 
-        BirdDetail.innerHTML = `
+        birdDetail.innerHTML = `
             <img src="${bird.image}" alt="${bird.name}" />
             <h2 class="bird-name">${bird.name}</h2>
             <p class="bird-species">${bird.species}</p>
             <div class="audio-player">
-                <button class="play-btn" data-audio="${bird.audio}" id="mysteryAudioButton" aria-label="Play">▶</button>
+                <button class="play-button" data-audio="${bird.audio}" id="detailAudioButton" aria-label="Play">▶</button>
                 <div class="progress-bar">
                     <div class="progress" id="mysteryProgress"></div>
                 </div>
@@ -64,21 +62,44 @@ export class UIUpdater {
         nextButton.disabled = false;
     }
 
-    clear() {
-        const BirdDetail = document.querySelector('.bird-details');
-        const mysteryBirdImage = document.querySelector('#mysteryBirdImage');
-        const mysteryBirdName = document.querySelector('#mysteryBirdName');
-        const species = document.querySelector('.species');
-        const mysteryAudioButton = document.querySelector('#mysteryAudioButton');
+    activeList(currentCategory) {
+        const questionList = document.querySelectorAll('#questionList li');
 
-        mysteryAudioButton.dataset.audio = '';
-        mysteryBirdName.textContent = '******';
-        species.textContent = '******';
-        mysteryBirdImage.src = '../../assets/images/bird.jpg';
+        questionList.forEach((element, i) => {
+            element.classList.remove('active');
 
-        birdsData.innerHTML = `
-        <p>Послушайте плеер.<br>Выберите птицу из списка.</p>
-        `
+            if (i === currentCategory) {
+                element.classList.add('active');
+            }
+        })
     }
 
+    showResult(score) {
+        alert(score + ': ball to`pladiz');
+    }
+
+    clear() {
+        const birdDetail = document.querySelector('.bird-details');
+        const mysteryBird = document.querySelector('.mystery-bird');
+
+        mysteryBird.innerHTML = `
+                 <img id="mysteryBirdImage" src="./assets/images/bird.jpg" alt="Mystery Bird" />
+                    <div class="mystery-bottom">
+                        <h2 id="mysteryBirdName">******</h2>
+                        <p class="species">*****</p>
+                        <div class="audio-player">
+                            <button class="play-button" id="mysteryAudioButton" aria-label="Play">▶</button>
+                            <div class="progress-bar">
+                                <div class="progress" id="mysteryProgress"></div>
+                            </div>
+                            <span class="time" id="mysteryTime">00:00 / 00:00</span>
+                        </div>
+                        <input type="range" name="volume" id="volume"> 
+                    </div>
+        
+        `
+        birdDetail.innerHTML = `
+            <p>Послушайте плеер.<br>Выберите птицу из списка.</p>
+        `
+    }
 }

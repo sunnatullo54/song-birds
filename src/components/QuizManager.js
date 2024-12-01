@@ -4,7 +4,7 @@ import { UIUpdater } from "./UIUpdater.js";
 
 export class QuizManager {
     constructor() {
-        this.audioPlayer = new AudioPlayer();
+        // this.audioPlayer = new AudioPlayer();
         this.uiUpdater = new UIUpdater();
         this.currentCategory = 0;
         this.currentBird = null;
@@ -17,7 +17,7 @@ export class QuizManager {
         this.initQuestion();
         this.uiUpdater.startQuizUi();
     }
-    
+
     initQuestion() {
         this.attemps = 0;
         this.givenCorrectAnswer = false;
@@ -27,28 +27,36 @@ export class QuizManager {
         const randomNumber = Math.floor(Math.random() * categoryBird.length);
         this.currentBird = categoryBird[randomNumber];
 
-        audioButton.dataset.audio = this.currentBird.audio; 
-    
-        this.uiUpdater.updateBirdList(categoryBird); 
-    }
-    
-    handleBirdSelectior(element) {
-        if (this.givenCorrectAnswer) return; 
-        console.log(element);
-        
-        const choosen = birdsData[this.currentCategory].filter((bird) => bird.name === element.dataset.bird);
+        audioButton.dataset.audio = this.currentBird.audio;
 
+        new AudioPlayer(audioButton); // yangi
+
+        this.uiUpdater.updateBirdList(categoryBird);
+        this.uiUpdater.activeList(this.currentCategory);
+    }
+
+    handleBirdSelection(element) {
+        if(this.givenCorrectAnswer) return;
+        const choosen = birdsData[this.currentCategory].filter((bird) => bird.name ===  element.dataset.bird);
+        
         this.uiUpdater.showBirdDetail(choosen[0]);
-    
-        if (element.dataset.bird === this.currentBird.name) {
+
+        const detailAudioButton = document.querySelector('#detailAudioButton'); // yangi
+
+        new AudioPlayer(detailAudioButton); // yangi
+
+        if(element.dataset.bird === this.currentBird.name) {
             this.score = this.score + 5 - this.attemps;
             this.uiUpdater.updateScore(this.score);
-            this.givenCorrectAnswer = true; 
+            this.givenCorrectAnswer = true;
             element.classList.add('correct');
             this.correctSoundFn();
             this.uiUpdater.showMysteryBird(this.currentBird);
             this.uiUpdater.enableNextQuestion();
             this.currentCategory++;
+            if(this.currentCategory > 5) {
+                this.uiUpdater.showResult(this.score);
+            }
         } else {
             this.attemps++;
             element.classList.add('incorrect');

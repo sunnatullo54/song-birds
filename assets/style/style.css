@@ -185,6 +185,8 @@ main {
 
 footer {
     padding: 1rem;
+    position: relative;
+    margin: auto;
 }
 
 .next-button {
@@ -226,4 +228,11 @@ footer {
     font-size: 1rem;
     cursor: pointer;
     text-decoration: none;
+}
+
+.result {
+    width: 200px;
+    height: 100px;
+    background-color: #ffffff;
+    margin: auto;
 }
