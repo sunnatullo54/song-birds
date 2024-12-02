@@ -75,7 +75,10 @@ export class UIUpdater {
     }
 
     showResult(score) {
-        alert(score + ': ball to`pladiz');
+        const result = document.getElementById('result');
+        result.style.display = 'block';
+        const p = result.querySelector('p');
+        p.textContent = `Siz ${score} topladingiz`; 
     }
 
     clear() {

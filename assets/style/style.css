@@ -231,8 +231,9 @@ footer {
 }
 
 .result {
-    width: 200px;
-    height: 100px;
-    background-color: #ffffff;
-    margin: auto;
+    display: none; 
+    color: #ffffff;
+    padding: 10px;
+    width: 300px;
+    margin-top: 20px;
 }
